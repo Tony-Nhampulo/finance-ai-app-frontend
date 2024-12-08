@@ -1,24 +1,8 @@
 import { Button } from "@/components/ui/button";
-import { LogInIcon, LogOutIcon } from "lucide-react";
-import { SignInButton, SignOutButton, useUser } from "@clerk/clerk-react";
+import { SignInButton } from "@clerk/clerk-react";
+import { LogInIcon } from "lucide-react";
 
 const LoginPage = () => {
-  const { isSignedIn, user, isLoaded } = useUser();
-
-  if (isSignedIn) {
-    return (
-      <div className="flex flex-col">
-        Olá, {user.firstName}
-        <SignOutButton>
-          <Button>
-            <LogOutIcon />
-            Sair
-          </Button>
-        </SignOutButton>
-      </div>
-    );
-  }
-
   return (
     <div className="h-screen md:grid md:grid-cols-2">
       {/* Left Side */}

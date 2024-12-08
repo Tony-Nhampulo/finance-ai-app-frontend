@@ -1,10 +1,13 @@
 import { ThemeProvider } from "@/components/theme-provider";
-import LoginPage from "./pages/login";
+import { MyRoutes } from "./routes";
+import { BrowserRouter } from "react-router-dom";
 
 function App() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <LoginPage />
+      <BrowserRouter>
+        <MyRoutes />
+      </BrowserRouter>
     </ThemeProvider>
   );
 }
