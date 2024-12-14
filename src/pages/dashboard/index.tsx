@@ -1,3 +1,5 @@
+import { Button } from "@/components/ui/button";
+import RippleButton from "@/components/ui/rippleButton";
 import { UserButton, useUser } from "@clerk/clerk-react";
 
 const DashboardPage = () => {
@@ -6,7 +8,10 @@ const DashboardPage = () => {
   return (
     <div className="flex flex-col items-center justify-center">
       {/* Olá, {user?.firstName} */}
-      <UserButton showName />
+
+      <RippleButton variant={"outline"} size="sm">
+        <UserButton showName />
+      </RippleButton>
     </div>
   );
 };
