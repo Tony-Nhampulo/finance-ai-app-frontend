@@ -1,5 +1,4 @@
-//import { namePersistAuth } from "../config/constants";
-import { useUser } from "@clerk/clerk-react";
+import { persistUserId } from "@/config/constants";
 import { Navigate } from "react-router-dom";
 
 interface PublicRouteProps {
@@ -7,16 +6,9 @@ interface PublicRouteProps {
 }
 
 export function PublicRoute({ children }: PublicRouteProps) {
-  /*const authUser =
-    JSON.parse(sessionStorage.getItem(namePersistAuth) as string) || {};
+  const authUser = sessionStorage.getItem(persistUserId) as string;
 
-  if (authUser && authUser?.token) {
-    return <Navigate to="/" />;
-  }*/
-
-  const { isSignedIn } = useUser();
-
-  if (isSignedIn) {
+  if (authUser || authUser != "" || authUser != null) {
     return <Navigate to="/dashboard" />;
   }
 

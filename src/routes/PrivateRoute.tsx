@@ -1,22 +1,14 @@
-import { useUser } from "@clerk/clerk-react";
 import { Navigate } from "react-router-dom";
-//import { namePersistAuth } from "../config/constants";
+import { persistUserId } from "@/config/constants";
 
 interface PrivateRouteProps {
   children: React.ReactNode;
 }
 
 export function PrivateRoute({ children }: PrivateRouteProps) {
-  /*const authUser =
-    JSON.parse(sessionStorage.getItem(namePersistAuth) as string) || {};
+  const authUser = sessionStorage.getItem(persistUserId) as string;
 
-  if (!authUser?.token) {
-    return <Navigate to="/login" />;
-  }*/
-
-  const { isSignedIn } = useUser();
-
-  if (!isSignedIn || isSignedIn == null) {
+  if (!authUser || authUser == "" || authUser === null) {
     return <Navigate to="/" />;
   }
 

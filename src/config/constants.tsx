@@ -1,0 +1,2 @@
+export const apiBaseUrl = "http://finance-ai-app.testing:8000/api/dashboard";
+export const persistUserId = "userId";

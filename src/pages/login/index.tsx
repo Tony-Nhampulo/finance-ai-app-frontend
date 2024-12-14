@@ -1,8 +1,12 @@
 import { Button } from "@/components/ui/button";
-import { SignInButton } from "@clerk/clerk-react";
+import { SignInButton, useAuth } from "@clerk/clerk-react";
 import { LogInIcon } from "lucide-react";
+import { Navigate } from "react-router-dom";
 
 const LoginPage = () => {
+  const { isSignedIn } = useAuth();
+  if (isSignedIn) return <Navigate to="/dashboard" />;
+
   return (
     <div className="h-screen md:grid md:grid-cols-2">
       {/* Left Side */}
