@@ -4,35 +4,12 @@ import { ColumnDef } from "@tanstack/react-table";
 import TransactionTypeBadge from "./components/transaction-type-badge";
 import RippleButton from "@/components/ui/rippleButton";
 import { PencilIcon, TrashIcon } from "lucide-react";
-
-// Transformando os enums do metodo de pagamentos de Inglês para Portugês
-export const Transaction_Payment_Method = {
-  Credit_Card: "Cartão de Crédito",
-  Debit_Card: "Cartão de Débito",
-  Bank_Transfer: "Transferência Bancária",
-  Cash: "Dinheiro",
-  Other: "Outro",
-};
-
-// Definindo os enums para os tipos de transações:
-export enum TransactionType {
-  Deposit = "Deposit",
-  Expense = "Expense",
-  Investment = "Investment",
-}
-
-export enum paymentMethod {
-  Credit_Card = "Credit_Card",
-  Debit_Card = "Debit_Card",
-  Bank_Transfer = "Bank_Transfer",
-  Cash = "Cash",
-  Other = "Other",
-}
-
-export interface TransactionCategory {
-  id: number;
-  name: string;
-}
+import {
+  PaymentMethod,
+  Transaction_Payment_Method,
+  TransactionCategory,
+  TransactionType,
+} from "@/components/transactions/enums-and-interfaces";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -41,7 +18,7 @@ export type TransactionProps = {
   name: string;
   amount: number;
   transaction_type: TransactionType;
-  payment_method: paymentMethod;
+  payment_method: PaymentMethod;
   date: Date;
   category: TransactionCategory;
   user_id: number;

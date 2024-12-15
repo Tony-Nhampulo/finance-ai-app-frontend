@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/badge";
-import { TransactionType } from "../transactionColumns";
+import {} from "../transactionColumns";
 import { CircleIcon } from "lucide-react";
+import { TransactionType } from "@/components/transactions/enums-and-interfaces";
 
 interface TransactionTypeBadgeProps {
   transaction_type: TransactionType;

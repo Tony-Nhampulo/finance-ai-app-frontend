@@ -96,6 +96,19 @@ body {
   pointer-events: none;
 }
 
+/* Custom Calender Day Selected */
+.space-y-4.rdp-caption_start.rdp-caption_end {
+  width: 100%;
+}
+
+.light .rdp-day_selected,
+.dark .rdp-day_selected {
+  border: 1px solid gray;
+  background-color: #55b02e !important;
+  color: white;
+  border-radius: 0.25rem;
+}
+
 @keyframes ripple-animation {
   to {
     transform: scale(4);

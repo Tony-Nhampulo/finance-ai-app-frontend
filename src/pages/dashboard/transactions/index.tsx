@@ -1,8 +1,8 @@
-import { Button } from "@/components/ui/button";
 import { useTransactions } from "@/hooks/dashboard/useTransactions";
-import { ArrowDown01Icon, Loader } from "lucide-react";
+import { Loader } from "lucide-react";
 import { DataTable } from "./data-table";
 import { transactionColumns } from "./transactionColumns";
+import AddTransactionButton from "@/components/add-transaction-button";
 
 const TransactionsPage = () => {
   const { transactions, loading } = useTransactions();
@@ -10,10 +10,7 @@ const TransactionsPage = () => {
     <div className="space-y-6 p-6">
       <div className="flex w-full items-center justify-between">
         <h1 className="text-2xl font-bold">Transações</h1>
-        <Button className="rounded-full">
-          Adicionar Transação
-          <ArrowDown01Icon />
-        </Button>
+        <AddTransactionButton />
       </div>
       <div>
         {loading ? (
