@@ -11,17 +11,12 @@ import {
 } from "./ui/dialog";
 import RippleButton from "./ui/rippleButton";
 
-import { z } from "zod";
 import {
-  TransactionType,
   Transaction_Payment_Method_Options,
   Transaction_Type_Options,
-  PaymentMethod,
   TransactionCategory,
 } from "@/components/transactions/enums-and-interfaces";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
 import { useTheme } from "./theme-provider";
 import { MoneyInput } from "./money-input";
 import Loader from "./Loader";
@@ -46,57 +41,23 @@ import { ScrollArea } from "./ui/scroll-area";
 import { Calendar } from "./ui/calendar";
 import { ptBR } from "date-fns/locale";
 
-const formSchema = z.object({
-  name: z.string().trim().min(3, {
-    message: "Nome da Transação é obrigatório.",
-  }),
-  amount: z
-    .string()
-    .trim()
-    .min(1, "Valor da Transação é obrigatório.")
-    .default(""),
-  transaction_type: z.nativeEnum(TransactionType, {
-    required_error: "Selecione o Tipo da Transação.",
-  }),
-  category: z.string({
-    required_error: "Seleccione a Categoria da Transação.",
-  }),
-  payment_method: z.nativeEnum(PaymentMethod, {
-    required_error: "Selecione o Método de Pagamento.",
-  }),
-  date: z.date({
-    required_error: "Seleccione a data da Transação.",
-  }),
-});
-
 const AddTransactionButton = () => {
-  const { categories, loading } = useTransactions();
+  const {
+    categories,
+    loading,
+    form,
+    handleTransactionSave,
+    dialogIsOpen,
+    setDialogIsOpen,
+  } = useTransactions();
   const { theme } = useTheme();
-
-  // 1. Define your form.
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: "",
-      amount: "",
-      transaction_type: TransactionType.Deposit,
-      //category: "",
-      payment_method: PaymentMethod.Credit_Card,
-      date: new Date(),
-    },
-  });
-
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
-  }
 
   return (
     <>
       <Dialog
+        open={dialogIsOpen}
         onOpenChange={(open) => {
+          setDialogIsOpen(open);
           if (!open) {
             form.reset();
           }
@@ -117,7 +78,7 @@ const AddTransactionButton = () => {
           <ScrollArea className="h-[600px] w-auto px-3">
             <Form {...form}>
               <form
-                onSubmit={form.handleSubmit(onSubmit)}
+                onSubmit={form.handleSubmit(handleTransactionSave)}
                 className="flex w-full flex-col items-center gap-2 space-y-2"
               >
                 <FormField
@@ -167,7 +128,12 @@ const AddTransactionButton = () => {
                             form.formState.errors.amount &&
                             "border-[1.5px] !border-red-500"
                           }`}
-                          {...field}
+                          value={field.value}
+                          onValueChange={({ floatValue }) =>
+                            field.onChange(floatValue)
+                          }
+                          onBlur={field.onBlur}
+                          disabled={field.disabled}
                         />
                         {/* <Input
                           type="number"

@@ -4,6 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import { useAuth } from "@clerk/clerk-react";
 import { useEffect } from "react";
 import { persistUserId } from "./config/constants";
+import { Toaster } from "./components/ui/toaster";
 
 function App() {
   const { isSignedIn, userId } = useAuth();
@@ -18,6 +19,7 @@ function App() {
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <BrowserRouter>
         <MyRoutes />
+        <Toaster />
       </BrowserRouter>
     </ThemeProvider>
   );
