@@ -18,7 +18,7 @@ export function useLogout() {
       await signOut(); // Call Clerk's sign-out method
 
       setTimeout(() => {
-        navigate("/home");
+        navigate("/");
       }, 500);
 
       console.log("Clicking");
