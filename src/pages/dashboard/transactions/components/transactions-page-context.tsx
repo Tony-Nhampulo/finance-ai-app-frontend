@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { apiBaseUrl, persistUserId } from "@/config/constants";
 import { TransactionProps } from "../transactionColumns";
@@ -35,6 +35,11 @@ export const TransactionsPageProvider: React.FC<{
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    getTransactions();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <TransactionsPageContext.Provider

@@ -3,7 +3,7 @@ export const Transaction_Payment_Method = {
   Credit_Card: "Cartão de Crédito",
   Debit_Card: "Cartão de Débito",
   Bank_Transfer: "Transferência Bancária",
-  Cash: "Dinheiro",
+  Cash: "Numerário",
   Other: "Outro",
 };
 

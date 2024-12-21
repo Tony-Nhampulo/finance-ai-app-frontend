@@ -109,6 +109,10 @@ body {
   border-radius: 0.25rem;
 }
 
+.bg-accent {
+  background-color: transparent !important;
+}
+
 @keyframes ripple-animation {
   to {
     transform: scale(4);

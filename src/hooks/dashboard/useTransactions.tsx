@@ -8,7 +8,7 @@ import {
   TransactionType,
   PaymentMethod,
 } from "@/components/transactions/enums-and-interfaces";
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 import { useTransactionsPageContext } from "@/pages/dashboard/transactions/components/transactions-page-context";
 import { useToast } from "@/hooks/use-toast";
 
@@ -28,57 +28,76 @@ const formSchema = z.object({
     })*/ transaction_type: z.nativeEnum(TransactionType, {
     required_error: "Selecione o Tipo da Transação.",
   }),
-  category: z.string({
-    required_error: "Seleccione a Categoria da Transação.",
-  }),
+  category: z
+    .string({
+      required_error: "Seleccione a Categoria da Transação.",
+    })
+    .nonempty("Seleccione a Categoria da Transação."),
   payment_method: z.nativeEnum(PaymentMethod, {
     required_error: "Selecione o Método de Pagamento.",
   }),
   date: z.date({
     required_error: "Seleccione a data da Transação.",
   }),
+  transaction_id: z.number().optional(), // Optional field for updates
 });
 
-export function useTransactions() {
+export type TransactionFormSchema = z.infer<typeof formSchema>;
+
+export function useTransactions(valuesToEdit?: TransactionFormSchema) {
   const [loading, setLoading] = useState(false);
   const [categoriesLoading, setCategoriesLoading] = useState(false);
   const [categories, setCategories] = useState([]);
   const userId = sessionStorage.getItem(persistUserId);
-  const [dialogIsOpen, setDialogIsOpen] = useState(false);
+  //const [dialogIsOpen, setDialogIsOpen] = useState(false);
   const { toast } = useToast();
 
   const { getTransactions } = useTransactionsPageContext();
 
   useEffect(() => {
-    getTransactions();
+    //getTransactions();
     getCategories();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // 1. Define your form.
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<TransactionFormSchema>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: "",
-      //amount: 0,
-      transaction_type: TransactionType.Deposit,
-      //category: "",
-      payment_method: PaymentMethod.Credit_Card,
-      date: new Date(),
-    },
+    defaultValues: valuesToEdit
+      ? {
+          ...valuesToEdit,
+          amount: Number(valuesToEdit.amount),
+          date: parseISO(valuesToEdit.date.toString()), // Ensure date is parsed correctly to Date FNS format and convert the date to string
+        }
+      : {
+          name: "",
+          // amount: 0,
+          transaction_type: TransactionType.Deposit,
+          category: "",
+          payment_method: PaymentMethod.Credit_Card,
+          date: new Date(), // Default to the current date
+        },
   });
 
   // 2. Define a submit handler.
-  const handleTransactionSave = async (values: z.infer<typeof formSchema>) => {
+  const handleTransactionSave = async (
+    values: TransactionFormSchema,
+    transaction_id?: number,
+  ) => {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    //console.log(values);
+    //console.log(transaction_id);
 
     try {
       setLoading(true);
 
-      await axios.post(
-        `${apiBaseUrl}/create-transaction`,
+      const method = transaction_id ? "put" : "post";
+      const url = transaction_id
+        ? `/update-transaction/${transaction_id}`
+        : "/create-transaction";
+
+      await axios[method](
+        `${apiBaseUrl + url}`,
         {
           //data: { ...values, userId },
           name: values.name,
@@ -96,7 +115,7 @@ export function useTransactions() {
         },
       );
 
-      setDialogIsOpen(false);
+      //setDialogIsOpen(false);
       form.reset();
 
       getTransactions();
@@ -104,7 +123,9 @@ export function useTransactions() {
       toast({
         variant: "success",
         title: "Successo",
-        description: "Transacção adicionada com Sucesso!",
+        description: transaction_id
+          ? "Transacção actualizada com sucesso!"
+          : "Transacção adicionada com sucesso!",
       });
     } catch (error) {
       console.error(error);
@@ -149,7 +170,7 @@ export function useTransactions() {
     categories,
     form,
     handleTransactionSave,
-    dialogIsOpen,
-    setDialogIsOpen,
+    //dialogIsOpen,
+    //setDialogIsOpen,
   };
 }

@@ -3,13 +3,14 @@
 import { ColumnDef } from "@tanstack/react-table";
 import TransactionTypeBadge from "./components/transaction-type-badge";
 import RippleButton from "@/components/ui/rippleButton";
-import { PencilIcon, TrashIcon } from "lucide-react";
+import { TrashIcon } from "lucide-react";
 import {
   PaymentMethod,
   Transaction_Payment_Method,
   TransactionCategory,
   TransactionType,
 } from "@/components/transactions/enums-and-interfaces";
+import EditTransactionButton from "./components/edit-transaction-button";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -21,7 +22,7 @@ export type TransactionProps = {
   payment_method: PaymentMethod;
   date: Date;
   category: TransactionCategory;
-  user_id: number;
+  //user_id: number;
 };
 
 export const transactionColumns: ColumnDef<TransactionProps>[] = [
@@ -80,16 +81,10 @@ export const transactionColumns: ColumnDef<TransactionProps>[] = [
   {
     accessorKey: "actions",
     header: "",
-    cell: () => {
+    cell: ({ row: { original: transactionRow } }) => {
       return (
         <div>
-          <RippleButton
-            variant={"ghost"}
-            size={"icon"}
-            className="text-muted-foreground"
-          >
-            <PencilIcon />
-          </RippleButton>
+          <EditTransactionButton transaction={transactionRow} />
 
           <RippleButton
             variant={"ghost"}
