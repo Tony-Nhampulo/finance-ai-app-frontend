@@ -5,6 +5,9 @@ import { useAuth } from "@clerk/clerk-react";
 import { useEffect } from "react";
 import { persistUserId } from "./config/constants";
 import { Toaster } from "./components/ui/toaster";
+import { QueryClient, QueryClientProvider } from "react-query";
+
+const queryClient = new QueryClient();
 
 function App() {
   const { isSignedIn, userId } = useAuth();
@@ -17,10 +20,12 @@ function App() {
 
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <BrowserRouter>
-        <MyRoutes />
-        <Toaster />
-      </BrowserRouter>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <MyRoutes />
+          <Toaster />
+        </BrowserRouter>
+      </QueryClientProvider>
     </ThemeProvider>
   );
 }

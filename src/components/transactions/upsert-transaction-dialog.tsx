@@ -42,6 +42,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Calendar } from "@/components/ui/calendar";
 import { ptBR } from "date-fns/locale";
 import { Save } from "lucide-react";
+import { useCategories } from "@/hooks/dashboard/useCategories";
 //import { TransactionProps } from "@/pages/dashboard/transactions/transactionColumns";
 
 interface UpsertTransactionDialogProps {
@@ -55,8 +56,9 @@ const UpsertTransactionDialog = ({
   setDialogIsOpen,
   valuesToEdit,
 }: UpsertTransactionDialogProps) => {
-  const { categories, loading, form, handleTransactionSave } =
+  const { loading, form, handleTransactionSave } =
     useTransactions(valuesToEdit);
+  const { categories } = useCategories();
   const { theme } = useTheme();
 
   const handleTransactionEditOrCreate = async (
@@ -229,7 +231,7 @@ const UpsertTransactionDialog = ({
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            {categories.length > 0 ? (
+                            {categories && categories.length > 0 ? (
                               categories.map((item: TransactionCategory) => (
                                 <SelectItem
                                   key={item.id}

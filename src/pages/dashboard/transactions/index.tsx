@@ -2,10 +2,12 @@ import { Loader } from "lucide-react";
 import { DataTable } from "./data-table";
 import { transactionColumns } from "./transactionColumns";
 import AddTransactionButton from "@/components/add-transaction-button";
-import { useTransactionsPageContext } from "@/pages/dashboard/transactions/components/transactions-page-context";
+//import { useTransactionsPageContext } from "@/pages/dashboard/transactions/components/transactions-page-context";
+import { useTransactions } from "@/hooks/dashboard/useTransactions";
 
 const TransactionsPage = () => {
-  const { transactions, loading } = useTransactionsPageContext();
+  // const { transactions, loading } = useTransactionsPageContext();
+  const { transactions, transactionsLoading } = useTransactions();
 
   return (
     <div className="space-y-6 p-6">
@@ -14,7 +16,7 @@ const TransactionsPage = () => {
         <AddTransactionButton />
       </div>
       <div>
-        {loading ? (
+        {transactionsLoading ? (
           <div className="flex h-5 items-center justify-center">
             <>
               <Loader className="mr-2 h-5 w-5 animate-spin" /> Carregando...

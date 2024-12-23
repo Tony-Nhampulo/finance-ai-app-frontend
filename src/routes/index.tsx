@@ -6,7 +6,7 @@ import { PrivateRoute } from "./PrivateRoute";
 import LoginPage from "@/pages/login";
 import DashboardPage from "@/pages/dashboard";
 import TransactionsPage from "@/pages/dashboard/transactions";
-import { TransactionsPageProvider } from "@/pages/dashboard/transactions/components/transactions-page-context";
+//import { TransactionsPageProvider } from "@/pages/dashboard/transactions/components/transactions-page-context";
 
 export const MyRoutes = () => {
   return (
@@ -33,9 +33,9 @@ export const MyRoutes = () => {
         path="dashboard/transactions"
         element={
           <PrivateRoute>
-            <TransactionsPageProvider>
-              <TransactionsPage />
-            </TransactionsPageProvider>
+            {/* <TransactionsPageProvider> */}
+            <TransactionsPage />
+            {/* </TransactionsPageProvider> */}
           </PrivateRoute>
         }
       />

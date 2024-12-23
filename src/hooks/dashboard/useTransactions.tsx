@@ -1,6 +1,6 @@
-import axios, { AxiosError } from "axios";
-import { useEffect, useState } from "react";
-import { apiBaseUrl, persistUserId } from "@/config/constants";
+import { AxiosError } from "axios";
+import { /*useEffect,*/ useState } from "react";
+import { persistUserId } from "@/config/constants";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -9,8 +9,10 @@ import {
   PaymentMethod,
 } from "@/components/transactions/enums-and-interfaces";
 import { format, parseISO } from "date-fns";
-import { useTransactionsPageContext } from "@/pages/dashboard/transactions/components/transactions-page-context";
+//import { useTransactionsPageContext } from "@/pages/dashboard/transactions/components/transactions-page-context";
 import { useToast } from "@/hooks/use-toast";
+import { api } from "@/services/api";
+import { useQuery } from "react-query";
 
 interface APIErrorResponse {
   message: string;
@@ -46,19 +48,34 @@ export type TransactionFormSchema = z.infer<typeof formSchema>;
 
 export function useTransactions(valuesToEdit?: TransactionFormSchema) {
   const [loading, setLoading] = useState(false);
-  const [categoriesLoading, setCategoriesLoading] = useState(false);
-  const [categories, setCategories] = useState([]);
+  // const [categoriesLoading, setCategoriesLoading] = useState(false);
+  // const [categories, setCategories] = useState([]);
   const userId = sessionStorage.getItem(persistUserId);
   //const [dialogIsOpen, setDialogIsOpen] = useState(false);
   const { toast } = useToast();
 
-  const { getTransactions } = useTransactionsPageContext();
+  //const { getTransactions } = useTransactionsPageContext();
 
-  useEffect(() => {
-    //getTransactions();
-    getCategories();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const {
+    data: transactions,
+    isLoading: transactionsLoading,
+    refetch: getTransactions,
+  } = useQuery(
+    "transactions",
+    async () => {
+      const response = await api.get(`/get-transactions`);
+      return response.data;
+    },
+    {
+      staleTime: 0, // Data is considered stale immediately, ensuring the freshest data is fetched
+      refetchOnWindowFocus: true,
+    },
+  );
+
+  // useEffect(() => {
+  //   //getTransactions();
+  //   //getCategories();
+  // }, []);
 
   // 1. Define your form.
   const form = useForm<TransactionFormSchema>({
@@ -96,24 +113,16 @@ export function useTransactions(valuesToEdit?: TransactionFormSchema) {
         ? `/update-transaction/${transaction_id}`
         : "/create-transaction";
 
-      await axios[method](
-        `${apiBaseUrl + url}`,
-        {
-          //data: { ...values, userId },
-          name: values.name,
-          amount: values.amount,
-          transaction_type: values.transaction_type,
-          category_id: Number(values.category),
-          payment_method: values.payment_method,
-          date: format(new Date(values.date), "yyyy-MM-dd HH:mm:ss"),
-          user_id: userId,
-        },
-        {
-          headers: {
-            UserId: userId, // Custom request header
-          },
-        },
-      );
+      await api[method](url, {
+        //data: { ...values, userId },
+        name: values.name,
+        amount: values.amount,
+        transaction_type: values.transaction_type,
+        category_id: Number(values.category),
+        payment_method: values.payment_method,
+        date: format(new Date(values.date), "yyyy-MM-dd HH:mm:ss"),
+        user_id: userId,
+      });
 
       //setDialogIsOpen(false);
       form.reset();
@@ -145,29 +154,26 @@ export function useTransactions(valuesToEdit?: TransactionFormSchema) {
     }
   };
 
-  const getCategories = async () => {
-    try {
-      setCategoriesLoading(true);
+  // const getCategories = async () => {
+  //   try {
+  //     setCategoriesLoading(true);
 
-      const response = await axios.get(`${apiBaseUrl}/transaction-categories`, {
-        headers: {
-          UserId: userId, // Custom request header
-        },
-      });
+  //     const response = await api.get(`/transaction-categories`);
 
-      setCategories(response.data);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setCategoriesLoading(false);
-    }
-  };
+  //     setCategories(response.data);
+  //   } catch (error) {
+  //     console.error(error);
+  //   } finally {
+  //     setCategoriesLoading(false);
+  //   }
+  // };
 
   return {
     loading,
-    //transactions,
-    categoriesLoading,
-    categories,
+    transactions,
+    transactionsLoading,
+    // categoriesLoading,
+    // categories,
     form,
     handleTransactionSave,
     //dialogIsOpen,
