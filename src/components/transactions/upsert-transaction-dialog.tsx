@@ -243,7 +243,7 @@ const UpsertTransactionDialog = ({
                               ))
                             ) : (
                               <>
-                                <Loader />
+                                <Loader text="Carregando categorias" />
                               </>
                             )}
                           </SelectContent>
@@ -379,7 +379,7 @@ const UpsertTransactionDialog = ({
                     }`}
                   >
                     {loading ? (
-                      <Loader />
+                      <Loader text="Processando" />
                     ) : (
                       <>
                         {<Save className="h-4 w-4" />}
