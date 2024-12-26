@@ -4,7 +4,7 @@ import { PrivateRoute } from "./PrivateRoute";
 // import { PublicRoute } from "./PublicRoute";
 // import { Navigate } from "react-router-dom";
 import LoginPage from "@/pages/login";
-import DashboardPage from "@/pages/dashboard";
+import DashboardPage from "@/pages/dashboard/home";
 import TransactionsPage from "@/pages/dashboard/transactions";
 //import { TransactionsPageProvider } from "@/pages/dashboard/transactions/components/transactions-page-context";
 
