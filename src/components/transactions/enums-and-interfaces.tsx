@@ -65,3 +65,11 @@ export const Transaction_Payment_Method_Options = [
     label: "Outro",
   },
 ];
+
+export const Transaction_Payment_Method_Icons = {
+  [PaymentMethod.Credit_Card]: "src/assets/credit-card.svg",
+  [PaymentMethod.Debit_Card]: "src/assets/debit-card.svg",
+  [PaymentMethod.Bank_Transfer]: "src/assets/bank-transfer.svg",
+  [PaymentMethod.Cash]: "src/assets/cash.svg",
+  [PaymentMethod.Other]: "src/assets/other.svg",
+};

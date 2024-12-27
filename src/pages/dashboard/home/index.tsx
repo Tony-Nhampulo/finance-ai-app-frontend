@@ -6,6 +6,8 @@ import { useTransactionsSummarys } from "@/hooks/dashboard/useTransactionsSummar
 import { isMatch } from "date-fns";
 import PercentagePieChart from "./components/percentage-pie-chart";
 import PercentageExpensesPerCategory from "./components/percentage-expenses-per-category";
+import LastTransactions from "./components/last-transactions";
+import { useTransactions } from "@/hooks/dashboard/useTransactions";
 
 const DashboardPage = () => {
   const navigate = useNavigate();
@@ -17,6 +19,7 @@ const DashboardPage = () => {
     transactionsPercentage,
     percentageExpensesPerCategory,
   } = useTransactionsSummarys(String(year), String(month));
+  const { lastTransactions } = useTransactions();
 
   const isInvalidYear = !isMatch(String(year), "yyyy");
   const isInvalidMonth = !isMatch(String(month), "MM");
@@ -38,7 +41,7 @@ const DashboardPage = () => {
           </div>
         </div>
 
-        <div className=" grid grid-cols-[2fr,1fr]">
+        <div className=" grid grid-cols-[2fr,1fr] gap-5">
           <div className="flex flex-col gap-6">
             <SummaryCards transactionsSummary={transactionsSummary} />
 
@@ -55,6 +58,8 @@ const DashboardPage = () => {
               )}
             </div>
           </div>
+
+          <LastTransactions lastTransactions={lastTransactions} />
         </div>
       </div>
     </>

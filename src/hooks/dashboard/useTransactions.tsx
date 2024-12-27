@@ -69,7 +69,23 @@ export function useTransactions(valuesToEdit?: TransactionFormSchema) {
     {
       staleTime: 0, // Data is considered stale immediately, ensuring the freshest data is fetched
       refetchOnWindowFocus: true,
+    }
+  );
+
+  const {
+    data: lastTransactions,
+    //isLoading: lastTransactionsLoading,
+    refetch: getLastTransactions,
+  } = useQuery(
+    "last-transactions",
+    async () => {
+      const response = await api.get(`/get-last-transactions`);
+      return response.data;
     },
+    {
+      staleTime: 0, // Data is considered stale immediately, ensuring the freshest data is fetched
+      refetchOnWindowFocus: true,
+    }
   );
 
   // useEffect(() => {
@@ -99,7 +115,7 @@ export function useTransactions(valuesToEdit?: TransactionFormSchema) {
   // 2. Define a submit handler.
   const handleTransactionSave = async (
     values: TransactionFormSchema,
-    transaction_id?: number,
+    transaction_id?: number
   ) => {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
@@ -128,6 +144,7 @@ export function useTransactions(valuesToEdit?: TransactionFormSchema) {
       form.reset();
 
       getTransactions();
+      //getTransactionsSummary();
 
       toast({
         variant: "success",
@@ -178,5 +195,6 @@ export function useTransactions(valuesToEdit?: TransactionFormSchema) {
     handleTransactionSave,
     //dialogIsOpen,
     //setDialogIsOpen,
+    lastTransactions,
   };
 }
