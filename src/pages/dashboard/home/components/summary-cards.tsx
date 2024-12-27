@@ -5,27 +5,17 @@ import {
   WalletIcon,
 } from "lucide-react";
 import IndividualSummaryCard from "./individual-summary-card";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { useTransactionsSummarys } from "@/hooks/dashboard/useTransactionsSummarys";
-import { isMatch } from "date-fns";
 
-const SummaryCards = () => {
-  const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const year = searchParams.get("year")?.toString();
-  const month = searchParams.get("month")?.toString();
-  const { transactionsSummary } = useTransactionsSummarys(
-    String(year),
-    String(month)
-  );
+interface transactionsSummaryProps {
+  transactionsSummary: {
+    total_balance: number;
+    total_investment: number;
+    total_deposit: number;
+    total_expense: number;
+  };
+}
 
-  const isInvalidYear = !isMatch(String(year), "yyyy");
-  const isInvalidMonth = !isMatch(String(month), "MM");
-
-  if ((year && isInvalidYear) || (month && isInvalidMonth)) {
-    navigate(`/dashboard`);
-  }
-
+const SummaryCards = ({ transactionsSummary }: transactionsSummaryProps) => {
   return (
     <div className="space-y-4">
       {/* Primeiro Card */}

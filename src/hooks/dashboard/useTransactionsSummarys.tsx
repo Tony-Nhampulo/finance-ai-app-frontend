@@ -23,9 +23,33 @@ export function useTransactionsSummarys(year: string, month: string) {
     }
   );
 
+  const {
+    data: transactionsPercentage,
+    isLoading: transactionsPercentageLoading,
+    refetch: getTransactionsPercentage,
+  } = useQuery(
+    ["transactions-percentage", { year, month }],
+    async ({ queryKey }) => {
+      const [, params] = queryKey as [string, { year: string; month: string }];
+      const response = await api.get(`/get-transactions-percentage`, {
+        params: {
+          year: params.year,
+          month: params.month,
+        },
+      });
+      return response.data;
+    },
+    {
+      refetchOnWindowFocus: true,
+    }
+  );
+
   return {
     transactionsSummary,
     transactionsSumaryLoading,
     getTransactionsSummary,
+    transactionsPercentage,
+    transactionsPercentageLoading,
+    getTransactionsPercentage,
   };
 }
