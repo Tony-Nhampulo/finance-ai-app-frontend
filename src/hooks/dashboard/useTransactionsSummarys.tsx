@@ -44,6 +44,27 @@ export function useTransactionsSummarys(year: string, month: string) {
     }
   );
 
+  const {
+    data: percentageExpensesPerCategory,
+    isLoading: percentageExpensesPerCategoryLoading,
+    refetch: getPercentageExpensesPerCategory,
+  } = useQuery(
+    ["percentage-expenses-per-category", { year, month }],
+    async ({ queryKey }) => {
+      const [, params] = queryKey as [string, { year: string; month: string }];
+      const response = await api.get(`/get-percentage-expanses-per-category`, {
+        params: {
+          year: params.year,
+          month: params.month,
+        },
+      });
+      return response.data;
+    },
+    {
+      refetchOnWindowFocus: true,
+    }
+  );
+
   return {
     transactionsSummary,
     transactionsSumaryLoading,
@@ -51,5 +72,8 @@ export function useTransactionsSummarys(year: string, month: string) {
     transactionsPercentage,
     transactionsPercentageLoading,
     getTransactionsPercentage,
+    percentageExpensesPerCategory,
+    percentageExpensesPerCategoryLoading,
+    getPercentageExpensesPerCategory,
   };
 }

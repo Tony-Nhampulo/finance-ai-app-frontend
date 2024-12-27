@@ -5,14 +5,18 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { useTransactionsSummarys } from "@/hooks/dashboard/useTransactionsSummarys";
 import { isMatch } from "date-fns";
 import PercentagePieChart from "./components/percentage-pie-chart";
+import PercentageExpensesPerCategory from "./components/percentage-expenses-per-category";
 
 const DashboardPage = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const year = searchParams.get("year")?.toString();
   const month = searchParams.get("month")?.toString();
-  const { transactionsSummary, transactionsPercentage } =
-    useTransactionsSummarys(String(year), String(month));
+  const {
+    transactionsSummary,
+    transactionsPercentage,
+    percentageExpensesPerCategory,
+  } = useTransactionsSummarys(String(year), String(month));
 
   const isInvalidYear = !isMatch(String(year), "yyyy");
   const isInvalidMonth = !isMatch(String(month), "MM");
@@ -43,6 +47,12 @@ const DashboardPage = () => {
                 transactionsSummary={transactionsSummary}
                 transactionsPercentages={transactionsPercentage}
               />
+
+              {percentageExpensesPerCategory && (
+                <PercentageExpensesPerCategory
+                  ExpensePerCategory={percentageExpensesPerCategory}
+                />
+              )}
             </div>
           </div>
         </div>
