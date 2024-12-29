@@ -5,7 +5,12 @@ import { Navigate } from "react-router-dom";
 
 const LoginPage = () => {
   const { isSignedIn } = useAuth();
-  if (isSignedIn) return <Navigate to="/dashboard" />;
+  if (isSignedIn)
+    return (
+      <Navigate
+        to={`/dashboard?year=${new Date().getFullYear()}&month=${new Date().getMonth() + 1}`}
+      />
+    );
 
   return (
     <div className="h-screen md:grid md:grid-cols-2">
