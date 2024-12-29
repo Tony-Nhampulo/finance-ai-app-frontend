@@ -8,10 +8,23 @@ import {
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
-const Year_Options = [
-  { value: "2024", label: "2024" },
-  { value: "2023", label: "2023" },
-];
+// const Year_Options = [
+//   { value: "2024", label: "2024" },
+//   { value: "2023", label: "2023" },
+// ];
+
+const generateYearsOptions = () => {
+  const currentYear = new Date().getFullYear();
+  const years = [];
+
+  for (let year = currentYear; year >= 2023; year--) {
+    years.push({ value: `${year}`, label: `${year}` });
+  }
+
+  return years;
+};
+
+const Year_Options = generateYearsOptions();
 
 const Month_Options = [
   { value: "01", label: "Janeiro" },
