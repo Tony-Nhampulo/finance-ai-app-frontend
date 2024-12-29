@@ -13,6 +13,8 @@ import { format, parseISO } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
 import { api } from "@/services/api";
 import { useQuery } from "react-query";
+import { useSearchParams } from "react-router-dom";
+import { useTransactionsSummarys } from "./useTransactionsSummarys";
 
 interface APIErrorResponse {
   message: string;
@@ -53,6 +55,15 @@ export function useTransactions(valuesToEdit?: TransactionFormSchema) {
   const userId = sessionStorage.getItem(persistUserId);
   //const [dialogIsOpen, setDialogIsOpen] = useState(false);
   const { toast } = useToast();
+
+  const [searchParams] = useSearchParams();
+  const year = searchParams.get("year")?.toString();
+  const month = searchParams.get("month")?.toString();
+  const {
+    getTransactionsSummary,
+    getTransactionsPercentage,
+    getPercentageExpensesPerCategory,
+  } = useTransactionsSummarys(String(year), String(month));
 
   //const { getTransactions } = useTransactionsPageContext();
 
@@ -144,7 +155,10 @@ export function useTransactions(valuesToEdit?: TransactionFormSchema) {
       form.reset();
 
       getTransactions();
-      //getTransactionsSummary();
+      getTransactionsSummary();
+      getLastTransactions();
+      getTransactionsPercentage();
+      getPercentageExpensesPerCategory();
 
       toast({
         variant: "success",
