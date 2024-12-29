@@ -27,7 +27,7 @@ const SummaryCards = ({ transactionsSummary }: transactionsSummaryProps) => {
       />
 
       {/* Demais Cards */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="sm:grid sm:grid-cols-3 gap-4">
         <IndividualSummaryCard
           icon={<PiggyBankIcon size={16} />}
           title={<p className="opacity-70">Investimento</p>}

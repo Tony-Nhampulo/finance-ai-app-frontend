@@ -33,7 +33,7 @@ const DashboardPage = () => {
       <Header />
 
       <div className="space-y-6 p-6">
-        <div className="flex justify-between">
+        <div className="flex justify-between max-sm:flex-col max-sm:space-y-4 max-md:mt-[75px]">
           <h1 className="text-2xl font-bold">Dashboard</h1>
 
           <div className="flex items-center gap-3">
@@ -41,11 +41,11 @@ const DashboardPage = () => {
           </div>
         </div>
 
-        <div className=" grid grid-cols-[2fr,1fr] gap-5">
+        <div className="lg:grid grid-cols-[2fr,1fr] gap-5">
           <div className="flex flex-col gap-6">
             <SummaryCards transactionsSummary={transactionsSummary} />
 
-            <div className="grid grid-cols-3 grid-rows-1 gap-6">
+            <div className="grid md:grid-cols-2 xl:grid-cols-3 grid-rows-1 gap-6  max-lg:mb-6 max-sm:space-y-6">
               <PercentagePieChart
                 transactionsSummary={transactionsSummary}
                 transactionsPercentages={transactionsPercentage}

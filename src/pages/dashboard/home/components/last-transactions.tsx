@@ -45,12 +45,12 @@ const LastTransactions = ({ lastTransactions }: LastTransactionsProps) => {
         </RippleButton>
       </CardHeader>
 
-      <ScrollArea>
+      <ScrollArea className="lg:h-[540px] lg:w-auto lg:pb-5">
         <CardContent className="space-y-6">
           {lastTransactions &&
             lastTransactions.map((transaction, index) => (
               <div key={index} className="flex justify-between items-center">
-                <div className="flex items-center gap-3 ">
+                <div className="flex items-center gap-3 max-[640px]:w-full">
                   <div className="bg-white bg-opacity-[3%] p-3 rounded-lg">
                     <img
                       src={
@@ -66,16 +66,22 @@ const LastTransactions = ({ lastTransactions }: LastTransactionsProps) => {
                     />
                   </div>
 
-                  <div>
+                  <div className="max-[640px]:flex max-[640px]:flex-col max-[640px]:w-full">
                     <p className="text-sm font-bold">{transaction.name}</p>
                     <p className="text-sm text-muted-foreground">
                       {formatDateValue(transaction.date, "short")}
+                    </p>
+                    <p
+                      className={`text-sm font-bold max-[640px]:block text-right hidden ${getAmountColor(transaction)}`}
+                    >
+                      {getAmountPrefix(transaction)}
+                      {formatCurrency(transaction.amount)}
                     </p>
                   </div>
                 </div>
 
                 <p
-                  className={`text-sm font-bold ${getAmountColor(transaction)}`}
+                  className={`text-sm font-bold max-[640px]:hidden ${getAmountColor(transaction)}`}
                 >
                   {getAmountPrefix(transaction)}
                   {formatCurrency(transaction.amount)}

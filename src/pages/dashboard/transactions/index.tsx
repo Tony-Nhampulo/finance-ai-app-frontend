@@ -15,7 +15,7 @@ const TransactionsPage = () => {
       <Header />
 
       <div className="space-y-6 p-6">
-        <div className="flex w-full items-center justify-between">
+        <div className="flex w-full items-center justify-between max-md:mt-[75px]">
           <h1 className="text-2xl font-bold">Transações</h1>
           <AddTransactionButton />
         </div>
