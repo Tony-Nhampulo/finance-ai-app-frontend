@@ -2,11 +2,12 @@ import Header from "@/components/Header";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import RippleButton from "@/components/ui/rippleButton";
 import { useStripeCheckout } from "@/hooks/dashboard/useStripeCheckout";
-import { CheckIcon, XIcon } from "lucide-react";
+import { CheckIcon, Loader, XIcon } from "lucide-react";
 import { loadStripe } from "@stripe/stripe-js";
 import { useUser } from "@clerk/clerk-react";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
+import { useTransactions } from "@/hooks/dashboard/useTransactions";
 
 const SubscriptionPage = () => {
   const { sessionId } = useStripeCheckout();
@@ -16,6 +17,8 @@ const SubscriptionPage = () => {
 
   const { user } = useUser();
   const hasPremiumPlan = user?.publicMetadata.subscriptionPlan === "premium";
+
+  const { userTransactionsCount } = useTransactions();
 
   const handleAcquirePlanClick = async () => {
     if (!Stripe_Publishable_Key) {
@@ -65,7 +68,15 @@ const SubscriptionPage = () => {
             <CardContent className="space-y-5 py-5">
               <div className="flex items-center gap-2">
                 <CheckIcon className="text-primary" />
-                <p>Apenas 10 transações por mês (7/10)</p>
+                <p className="flex items-center">
+                  Apenas 10 transações (
+                  {!userTransactionsCount ? (
+                    <Loader className="h-4 w-4 animate-spin" />
+                  ) : (
+                    `${userTransactionsCount}/10`
+                  )}
+                  )
+                </p>
               </div>
 
               <div className="flex items-center gap-2">

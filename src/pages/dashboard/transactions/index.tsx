@@ -8,7 +8,8 @@ import Header from "@/components/Header";
 
 const TransactionsPage = () => {
   // const { transactions, loading } = useTransactionsPageContext();
-  const { transactions, transactionsLoading } = useTransactions();
+  const { transactions, transactionsLoading, canUserAddTransactions } =
+    useTransactions();
 
   return (
     <>
@@ -17,7 +18,10 @@ const TransactionsPage = () => {
       <div className="space-y-6 p-6">
         <div className="flex w-full items-center justify-between max-md:mt-[75px]">
           <h1 className="text-2xl font-bold">Transações</h1>
-          <AddTransactionButton />
+
+          <AddTransactionButton
+            canUserAddTransactions={canUserAddTransactions}
+          />
         </div>
         <div>
           {!transactions || transactionsLoading ? (

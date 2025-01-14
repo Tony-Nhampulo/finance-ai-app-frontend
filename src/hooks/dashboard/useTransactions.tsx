@@ -15,6 +15,7 @@ import { api } from "@/services/api";
 import { useQuery } from "react-query";
 import { useSearchParams } from "react-router-dom";
 import { useTransactionsSummarys } from "./useTransactionsSummarys";
+import { useUser } from "@clerk/clerk-react";
 
 interface APIErrorResponse {
   message: string;
@@ -65,7 +66,31 @@ export function useTransactions(valuesToEdit?: TransactionFormSchema) {
     getPercentageExpensesPerCategory,
   } = useTransactionsSummarys(String(year), String(month));
 
+  const [userTransactionsCount, setUserTransactionsCount] = useState(0);
+  const { user } = useUser();
+  const hasPremiumPlan = user?.publicMetadata.subscriptionPlan === "premium";
+
   //const { getTransactions } = useTransactionsPageContext();
+
+  const { data: canUserAddTransactions, refetch: getTransactionsCount } =
+    useQuery(
+      "can-user-add-transactions",
+      async () => {
+        const response = await api.get(`/get-transactions-count`);
+        const userTransanctions = response.data as number;
+        setUserTransactionsCount(userTransanctions);
+
+        if (userTransanctions >= 10 && hasPremiumPlan === false) {
+          return false;
+        }
+
+        return true;
+      },
+      {
+        staleTime: 0,
+        refetchOnWindowFocus: true,
+      }
+    );
 
   const {
     data: transactions,
@@ -159,6 +184,7 @@ export function useTransactions(valuesToEdit?: TransactionFormSchema) {
       getLastTransactions();
       getTransactionsPercentage();
       getPercentageExpensesPerCategory();
+      getTransactionsCount();
 
       toast({
         variant: "success",
@@ -210,5 +236,7 @@ export function useTransactions(valuesToEdit?: TransactionFormSchema) {
     //dialogIsOpen,
     //setDialogIsOpen,
     lastTransactions,
+    canUserAddTransactions,
+    userTransactionsCount,
   };
 }

@@ -2,6 +2,7 @@ import AddTransactionButton from "@/components/add-transaction-button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Loader2 } from "lucide-react";
 import { ReactNode } from "react";
+import { useTransactions } from "@/hooks/dashboard/useTransactions";
 
 interface IndividualSummaryCardProps {
   icon: ReactNode;
@@ -16,6 +17,8 @@ const IndividualSummaryCard = ({
   amount,
   cardSize = "small",
 }: IndividualSummaryCardProps) => {
+  const { canUserAddTransactions } = useTransactions();
+
   return (
     <Card className="max-sm:mt-4">
       <CardHeader className="flex-row items-center gap-2 px-6 py-3">
@@ -39,7 +42,11 @@ const IndividualSummaryCard = ({
             </>
           )}
         </p>
-        {cardSize == "large" && <AddTransactionButton />}
+        {cardSize == "large" && (
+          <AddTransactionButton
+            canUserAddTransactions={canUserAddTransactions}
+          />
+        )}
       </CardContent>
     </Card>
   );
