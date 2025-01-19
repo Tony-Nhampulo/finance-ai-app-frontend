@@ -8,6 +8,7 @@ import PercentagePieChart from "./components/percentage-pie-chart";
 import PercentageExpensesPerCategory from "./components/percentage-expenses-per-category";
 import LastTransactions from "./components/last-transactions";
 import { useTransactions } from "@/hooks/dashboard/useTransactions";
+import AiReportButton from "./components/ai-report-button";
 
 const DashboardPage = () => {
   const navigate = useNavigate();
@@ -38,6 +39,7 @@ const DashboardPage = () => {
 
           <div className="flex items-center gap-3">
             <DataPeriodSelect />
+            <AiReportButton />
           </div>
         </div>
 
