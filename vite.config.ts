@@ -9,5 +9,5 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  base: "/finance-ai-app-frontend/blob/",
+  base: "/finance-ai-app-frontend/",
 });
