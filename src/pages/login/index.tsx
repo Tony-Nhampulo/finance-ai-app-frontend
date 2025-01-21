@@ -8,7 +8,7 @@ const LoginPage = () => {
   if (isSignedIn)
     return (
       <Navigate
-        to={`/dashboard?year=${new Date().getFullYear()}&month=${new Date().getMonth() + 1}`}
+        to={`/dashboard?year=${new Date().getFullYear()}&month=${(new Date().getMonth() + 1).toString().padStart(2, "0")}`}
       />
     );
 

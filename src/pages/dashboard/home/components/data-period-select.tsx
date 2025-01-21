@@ -60,7 +60,7 @@ const DataPeriodSelect = () => {
   const handleMonthSelect = (year: string, month: string) => {
     //console.log(month);
     if (!year) {
-      year = "2024";
+      year = new Date().getFullYear().toString();
     }
     setMonth(month);
     navigate(`/dashboard?year=${year}&month=${month}`);

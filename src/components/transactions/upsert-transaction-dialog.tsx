@@ -41,7 +41,7 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Calendar } from "@/components/ui/calendar";
 import { ptBR } from "date-fns/locale";
-import { Save } from "lucide-react";
+import { PlusIcon, Save } from "lucide-react";
 import { useCategories } from "@/hooks/dashboard/useCategories";
 //import { TransactionProps } from "@/pages/dashboard/transactions/transactionColumns";
 
@@ -62,7 +62,7 @@ const UpsertTransactionDialog = ({
   const { theme } = useTheme();
 
   const handleTransactionEditOrCreate = async (
-    values: TransactionFormSchema,
+    values: TransactionFormSchema
   ) => {
     await handleTransactionSave(values, values.transaction_id);
     setDialogIsOpen(false);
@@ -203,56 +203,152 @@ const UpsertTransactionDialog = ({
                   )}
                 />
 
-                <FormField
-                  control={form.control}
-                  name="category"
-                  render={({ field }) => (
-                    <FormItem className="w-full">
-                      <FormLabel
-                        className={`${
-                          theme == "light" ? "text-black" : "text-white"
-                        }`}
-                      >
-                        Categoria da Transação
-                      </FormLabel>
-                      <FormControl>
-                        <Select
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
+                <div className="flex w-full gap-2">
+                  <FormField
+                    control={form.control}
+                    name="category"
+                    render={({ field }) => (
+                      <FormItem className="w-full">
+                        <FormLabel
+                          className={`${
+                            theme == "light" ? "text-black" : "text-white"
+                          }`}
                         >
-                          <FormControl>
-                            <SelectTrigger
+                          Categoria da Transação
+                        </FormLabel>
+                        <FormControl>
+                          <Select
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                          >
+                            <FormControl>
+                              <SelectTrigger
+                                className={`${
+                                  form.formState.errors.category &&
+                                  "border-[1.5px] !border-red-500"
+                                }`}
+                              >
+                                <SelectValue placeholder="Seleccione a Categoria da Transação" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {categories && categories.length > 0 ? (
+                                categories.map((item: TransactionCategory) => (
+                                  <SelectItem
+                                    key={item.id}
+                                    value={item.id.toString()}
+                                    className="cursor-pointer hover:bg-slate-50 hover:bg-opacity-10"
+                                  >
+                                    {item.name}
+                                  </SelectItem>
+                                ))
+                              ) : (
+                                <>
+                                  <Loader text="Carregando categorias" />
+                                </>
+                              )}
+                            </SelectContent>
+                          </Select>
+                        </FormControl>
+                        <FormMessage className="text-xs text-red-500" />
+                      </FormItem>
+                    )}
+                  />
+
+                  <Dialog
+                  // open={dialogIsOpen}
+                  // onOpenChange={(open) => {
+                  //   setDialogIsOpen(open);
+                  //   if (!open) {
+                  //     form.reset();
+                  //   }
+                  // }}
+                  >
+                    <DialogTrigger asChild>
+                      <RippleButton
+                        variant={"outline"}
+                        size={"icon"}
+                        type="button"
+                        className="top-8"
+                      >
+                        <PlusIcon />
+                      </RippleButton>
+                    </DialogTrigger>
+
+                    <DialogContent className="w-[80%] rounded-md px-5 max-w-[400px] min-w-[325px]">
+                      <DialogHeader>
+                        <DialogTitle className="text-base">
+                          Adicionar Categoria
+                        </DialogTitle>
+                      </DialogHeader>
+
+                      {/* <Form {...form}>
+                        <form
+                          onSubmit={form.handleSubmit()}
+                          className="flex w-full flex-col items-center gap-2 space-y-2"
+                        >
+                          <FormField
+                            control={form.control}
+                            name="name"
+                            render={({ field }) => (
+                              <FormItem className="w-full">
+                                <FormLabel
+                                  className={`${
+                                    theme == "light"
+                                      ? "text-black"
+                                      : "text-white"
+                                  }`}
+                                >
+                                  Nome da Categoria
+                                </FormLabel>
+                                <FormControl>
+                                  <Input
+                                    type="text"
+                                    placeholder="Digite o nome da Categoria."
+                                    className={`${
+                                      form.formState.errors.name &&
+                                      "border-[1.5px] !border-red-500"
+                                    }`}
+                                    {...field}
+                                  />
+                                </FormControl>
+                                <FormMessage className="text-xs text-red-500" />
+                              </FormItem>
+                            )}
+                          />
+
+                          <DialogFooter className="w-full gap-3 px-1">
+                            <DialogClose asChild>
+                              <RippleButton type="button" variant="outline">
+                                Cancelar
+                              </RippleButton>
+                            </DialogClose>
+
+                            <RippleButton
+                              size={"sm"}
+                              type="submit"
+                              disabled={loading}
                               className={`${
-                                form.formState.errors.category &&
-                                "border-[1.5px] !border-red-500"
+                                theme === "light"
+                                  ? "rounded border-[1px] border-gray-300 bg-[#8161ff] text-white hover:bg-[#613cf3]"
+                                  : ""
                               }`}
                             >
-                              <SelectValue placeholder="Seleccione a Categoria da Transação" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            {categories && categories.length > 0 ? (
-                              categories.map((item: TransactionCategory) => (
-                                <SelectItem
-                                  key={item.id}
-                                  value={item.id.toString()}
-                                  className="cursor-pointer hover:bg-slate-50 hover:bg-opacity-10"
-                                >
-                                  {item.name}
-                                </SelectItem>
-                              ))
-                            ) : (
-                              <>
-                                <Loader text="Carregando categorias" />
-                              </>
-                            )}
-                          </SelectContent>
-                        </Select>
-                      </FormControl>
-                      <FormMessage className="text-xs text-red-500" />
-                    </FormItem>
-                  )}
-                />
+                              {loading ? (
+                                <Loader text="Processando" />
+                              ) : (
+                                <>
+                                  <Save className="h-4 w-4" />
+                                  Adicionar
+                                </>
+                              )}
+                            </RippleButton>
+                          </DialogFooter>
+                        </form>
+                      </Form> */}
+                    </DialogContent>
+                  </Dialog>
+                </div>
 
                 <FormField
                   control={form.control}
