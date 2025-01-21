@@ -1,6 +1,5 @@
 "use client";
 
-import * as React from "react";
 import { ptBR } from "date-fns/locale";
 import { Calendar as CalendarIcon } from "lucide-react";
 
@@ -23,7 +22,7 @@ export const DatePicker = ({ value, onChange }: DatePickerProps) => {
           variant={"outline"}
           className={cn(
             "w-full justify-start text-left font-normal",
-            !value && "text-muted-foreground",
+            !value && "text-muted-foreground"
           )}
         >
           <CalendarIcon className="mr-2 h-4 w-4" />

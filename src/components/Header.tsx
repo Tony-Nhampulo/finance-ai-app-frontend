@@ -46,11 +46,12 @@ const Header = () => {
           <div className="flex flex-col">
             <RippleButton
               variant={"outline"}
-              className={`w-full border-0 rounded-none block text-left pl-12 ${pathname == "/dashboard" ? "font-bold text-primary pl-10 border border-l-4 border-l-primary border-t-0 border-r-0 border-b-0" : "text-primary-foreground"}`}
+              className={`w-full border-0 rounded-none block text-left pt-2.5 pl-11 ${pathname == "/dashboard" ? "font-bold text-primary pl-10 border border-l-4 border-l-primary border-t-0 border-r-0 border-b-0" : "text-primary-foreground"}`}
               size={"lg"}
+              asChild
             >
               <Link
-                to={`/dashboard?year=${new Date().getFullYear()}&month=${new Date().getMonth() + 1}`}
+                to={`/dashboard?year=${new Date().getFullYear()}&month=${(new Date().getMonth() + 1).toString().padStart(2, "0")}`}
               >
                 Dashboard
               </Link>
@@ -58,16 +59,18 @@ const Header = () => {
 
             <RippleButton
               variant={"outline"}
-              className={`w-full border-0 rounded-none block text-left pl-12 ${pathname == "/dashboard/transactions" ? "font-bold text-primary pl-10 border border-l-4 border-l-primary border-t-0 border-r-0 border-b-0" : "text-primary-foreground"}`}
+              className={`w-full border-0 rounded-none block text-left pt-2.5 pl-11 ${pathname == "/dashboard/transactions" ? "font-bold text-primary pl-10 border border-l-4 border-l-primary border-t-0 border-r-0 border-b-0" : "text-primary-foreground"}`}
               size={"lg"}
+              asChild
             >
               <Link to={"/dashboard/transactions"}>Transações</Link>
             </RippleButton>
 
             <RippleButton
               variant={"outline"}
-              className={`w-full border-0 rounded-none block text-left pl-12 ${pathname == "/dashboard/subscription" ? "font-bold text-primary pl-10 border border-l-4 border-l-primary border-t-0 border-r-0 border-b-0" : "text-primary-foreground"}`}
+              className={`w-full border-0 rounded-none block text-left pt-2.5 pl-11 ${pathname == "/dashboard/subscription" ? "font-bold text-primary pl-10 border border-l-4 border-l-primary border-t-0 border-r-0 border-b-0" : "text-primary-foreground"}`}
               size={"lg"}
+              asChild
             >
               <Link to={"/dashboard/subscription"}>Assinatura</Link>
             </RippleButton>
@@ -104,7 +107,7 @@ const Header = () => {
         />
 
         <Link
-          to={`/dashboard?year=${new Date().getFullYear()}&month=${new Date().getMonth() + 1}`}
+          to={`/dashboard?year=${new Date().getFullYear()}&month=${(new Date().getMonth() + 1).toString().padStart(2, "0")}`}
           className={`mt-1 ${pathname == "/dashboard" ? "font-bold text-primary" : "text-primary-foreground"}`}
         >
           Dashboard
