@@ -15,6 +15,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { baseUrl } from "@/config/constants";
 
 const Header = () => {
   const { pathname } = useLocation();
@@ -35,7 +36,7 @@ const Header = () => {
           <SheetHeader>
             <SheetTitle className="border-b border-solid p-4">
               <img
-                src={"../src/assets/logo.png"}
+                src={`${baseUrl}/assets/logo.png`}
                 width={150}
                 height={39}
                 alt="Finance AI Logo"
@@ -100,7 +101,7 @@ const Header = () => {
 
       <div className="md:flex items-center gap-10 hidden">
         <img
-          src={"../src/assets/logo.png"}
+          src={`${baseUrl}/assets/logo.png`}
           width={150}
           height={39}
           alt="Finance AI Logo"

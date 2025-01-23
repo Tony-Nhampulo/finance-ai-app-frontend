@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { baseUrl } from "@/config/constants";
 import { SignInButton, useAuth } from "@clerk/clerk-react";
 import { LogInIcon } from "lucide-react";
 import { Navigate } from "react-router-dom";
@@ -17,7 +18,7 @@ const LoginPage = () => {
       {/* Left Side */}
       <div className="mx-auto flex h-full max-w-[500px] flex-col justify-center p-8">
         <img
-          src={"src/assets/logo.png"}
+          src={`${baseUrl}/assets/logo.png`}
           width={173}
           height={39}
           alt="Finance AI Logo"
@@ -41,7 +42,9 @@ const LoginPage = () => {
       {/* Right Side */}
       <div
         className="hidden h-full w-full bg-cover bg-center text-white md:block"
-        style={{ backgroundImage: `url(src/assets/login-page-background.png)` }}
+        style={{
+          backgroundImage: `url(${baseUrl}/assets/login-page-background.png)`,
+        }}
       ></div>
     </div>
   );

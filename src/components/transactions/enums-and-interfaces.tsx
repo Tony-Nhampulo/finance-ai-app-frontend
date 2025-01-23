@@ -1,3 +1,5 @@
+import { baseUrl } from "@/config/constants";
+
 // Traduzindo os enums do metodo de pagamentos de Inglês para Portugês
 export const Transaction_Payment_Method = {
   Credit_Card: "Cartão de Crédito",
@@ -67,9 +69,9 @@ export const Transaction_Payment_Method_Options = [
 ];
 
 export const Transaction_Payment_Method_Icons = {
-  [PaymentMethod.Credit_Card]: "src/assets/credit-card.svg",
-  [PaymentMethod.Debit_Card]: "src/assets/debit-card.svg",
-  [PaymentMethod.Bank_Transfer]: "src/assets/bank-transfer.svg",
-  [PaymentMethod.Cash]: "src/assets/cash.svg",
-  [PaymentMethod.Other]: "src/assets/other.svg",
+  [PaymentMethod.Credit_Card]: baseUrl + "/assets/credit-card.svg",
+  [PaymentMethod.Debit_Card]: baseUrl + "/assets/debit-card.svg",
+  [PaymentMethod.Bank_Transfer]: baseUrl + "/assets/bank-transfer.svg",
+  [PaymentMethod.Cash]: baseUrl + "/assets/cash.svg",
+  [PaymentMethod.Other]: baseUrl + "/assets/other.svg",
 };
