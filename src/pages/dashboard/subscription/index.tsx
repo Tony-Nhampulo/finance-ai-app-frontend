@@ -6,8 +6,9 @@ import { CheckIcon, Loader, XIcon } from "lucide-react";
 import { loadStripe } from "@stripe/stripe-js";
 import { useUser } from "@clerk/clerk-react";
 import { Badge } from "@/components/ui/badge";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useTransactions } from "@/hooks/dashboard/useTransactions";
+import SuccessMessage from "./success-message";
 
 const SubscriptionPage = () => {
   const { sessionId } = useStripeCheckout();
@@ -18,7 +19,7 @@ const SubscriptionPage = () => {
   const { user } = useUser();
   const hasPremiumPlan = user?.publicMetadata.subscriptionPlan === "premium";
 
-  const { userTransactionsCount } = useTransactions();
+  const { userTransactionsCount, transactionsCountLoading } = useTransactions();
 
   const handleAcquirePlanClick = async () => {
     if (!Stripe_Publishable_Key) {
@@ -37,6 +38,20 @@ const SubscriptionPage = () => {
 
     await stripe.redirectToCheckout({ sessionId });
   };
+
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const success = searchParams.get("success")?.toString();
+
+  if (success && success === "true") {
+    return (
+      <>
+        <SuccessMessage />
+      </>
+    );
+  } else {
+    navigate(`/dashboard/subscription`);
+  }
 
   return (
     <>
@@ -70,7 +85,7 @@ const SubscriptionPage = () => {
                 <CheckIcon className="text-primary" />
                 <p className="flex items-center">
                   Apenas 10 transações (
-                  {!userTransactionsCount ? (
+                  {transactionsCountLoading ? (
                     <Loader className="h-4 w-4 animate-spin" />
                   ) : (
                     `${userTransactionsCount}/10`
