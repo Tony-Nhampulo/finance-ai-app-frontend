@@ -72,25 +72,28 @@ export function useTransactions(valuesToEdit?: TransactionFormSchema) {
 
   //const { getTransactions } = useTransactionsPageContext();
 
-  const { data: canUserAddTransactions, refetch: getTransactionsCount } =
-    useQuery(
-      "can-user-add-transactions",
-      async () => {
-        const response = await api.get(`/get-transactions-count`);
-        const userTransanctions = response.data as number;
-        setUserTransactionsCount(userTransanctions);
+  const {
+    data: canUserAddTransactions,
+    isLoading: transactionsCountLoading,
+    refetch: getTransactionsCount,
+  } = useQuery(
+    "can-user-add-transactions",
+    async () => {
+      const response = await api.get(`/get-transactions-count`);
+      const userTransanctions = response.data as number;
+      setUserTransactionsCount(userTransanctions);
 
-        if (userTransanctions >= 10 && hasPremiumPlan === false) {
-          return false;
-        }
-
-        return true;
-      },
-      {
-        staleTime: 0,
-        refetchOnWindowFocus: true,
+      if (userTransanctions >= 10 && hasPremiumPlan === false) {
+        return false;
       }
-    );
+
+      return true;
+    },
+    {
+      staleTime: 0,
+      refetchOnWindowFocus: true,
+    }
+  );
 
   const {
     data: transactions,
@@ -238,5 +241,6 @@ export function useTransactions(valuesToEdit?: TransactionFormSchema) {
     lastTransactions,
     canUserAddTransactions,
     userTransactionsCount,
+    transactionsCountLoading,
   };
 }

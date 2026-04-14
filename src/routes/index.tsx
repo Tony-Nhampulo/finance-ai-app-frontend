@@ -13,7 +13,7 @@ export const MyRoutes = () => {
   return (
     <Routes>
       <Route
-        path="/finance-ai-app-frontend/"
+        path="/"
         element={
           <>
             <LoginPage />
